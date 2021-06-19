@@ -849,7 +849,7 @@ cursor.BackgroundColor3 = Color3.new(1, 1, 1)
 AddPadding(elements_Container, 17, "Waypoints")
 
 -- Visualisation
-local switch_ShowWaypoints = CreateSwitch(elements_Container, "", "Show Waypoints", false)
+local switch_ShowWaypoints = CreateSwitch(elements_Container, "", "Show Waypoints", true)
 
 -- Buttons
 local button_AddWaypoint = CreateButton(elements_Container, "", "Create Waypoint", "Create")
