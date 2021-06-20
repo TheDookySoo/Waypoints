@@ -852,14 +852,15 @@ AddPadding(elements_Container, 17, "Waypoints")
 local switch_ShowWaypoints = CreateSwitch(elements_Container, "", "Show Waypoints", true)
 
 -- Buttons
-local button_AddWaypoint = CreateButton(elements_Container, "", "Create Waypoint", "Create")
+local button_AddAtCharacter = CreateButton(elements_Container, "", "Create At Character", "Create")
+local button_AddAtCamera = CreateButton(elements_Container, "", "Create At Camera", "Create")
 
 -- Waypoints
-local waypointsScrollingFrameBackground = CreateFrame(mainFrame, "", 4, UDim2.new(1, -10, 1, -90), UDim2.new(0.5, 0, 1, -4), Vector2.new(0.5, 1), APPLICATION_THEME.Color_Medium)
+local waypointsScrollingFrameBackground = CreateFrame(mainFrame, "", 4, UDim2.new(1, -10, 1, -110), UDim2.new(0.5, 0, 1, -4), Vector2.new(0.5, 1), APPLICATION_THEME.Color_Medium)
 local waypointsScrollingFrame = CreateScrollingFrame(waypointsScrollingFrameBackground, "", UDim2.new(1, 0, 1, 0), UDim2.new(0, 0, 0, 0), nil, 0)
 waypointsScrollingFrame.BackgroundTransparency = 1
 
-local function CreateWaypoint(homeCFrame)
+local function CreateWaypoint(homeCFrame, defaultName)
 	local exists = true
 	
 	local frame = Instance.new("Frame", waypointsScrollingFrame)
@@ -878,7 +879,7 @@ local function CreateWaypoint(homeCFrame)
 	nameTextBox.Font = Enum.Font.GothamSemibold
 	nameTextBox.TextColor3 = Color3.new(1, 1, 1)
 	nameTextBox.TextSize = 12
-	nameTextBox.Text = "New Waypoint"
+	nameTextBox.Text = defaultName
 	
 	-- Teleport button
 	local teleportFrame = CreateFrame(frame, "", 4, UDim2.new(0.2, 0, 1, -4), UDim2.new(1, -20, 0.5, 0), Vector2.new(1, 0.5), Color3.fromRGB(20, 20, 20))
@@ -1034,12 +1035,19 @@ while SCRIPT_ENABLED do
 	end
 
 	-- Interaction
-	if button_AddWaypoint.ButtonPressed() then
+	if button_AddAtCharacter.ButtonPressed() then
 		if LOCAL_PLAYER.Character then
 			if LOCAL_PLAYER.Character.PrimaryPart then
-				CreateWaypoint(LOCAL_PLAYER.Character:GetPrimaryPartCFrame())
+				CreateWaypoint(LOCAL_PLAYER.Character:GetPrimaryPartCFrame(), "New Character Waypoint")
 			end
 		end
+	end
+	
+	if button_AddAtCamera.ButtonPressed() then
+		local x, y, z = cam.CFrame:ToOrientation()
+		local new = CFrame.new(cam.CFrame.Position) * CFrame.fromOrientation(0, y, 0)
+		
+		CreateWaypoint(new, "New Camera Waypoint")
 	end
 	
 	if switch_ShowWaypoints.ValueChanged() then
