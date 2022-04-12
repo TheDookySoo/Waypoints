@@ -55,7 +55,13 @@ end
 
 -- Gui Functions
 local function CreateGui(parent, name, resetOnSpawn, ignoreGuiInset)
-	local gui = Instance.new("ScreenGui", parent)
+	local gui = Instance.new("ScreenGui")
+	
+	pcall(function()
+		syn.protect_gui(gui)
+	end)
+	
+	gui.Parent = parent
 	gui.Name = name
 
 	gui.IgnoreGuiInset = ignoreGuiInset
